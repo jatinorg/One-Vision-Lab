@@ -1,0 +1,197 @@
+/* ---------- GLOBAL ---------- */
+.home {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #111827;
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  padding: 90px 40px;
+  text-align: center;
+  background: linear-gradient(135deg, #1e3a8a, #4f46e5);
+  color: white;
+}
+
+.hero-title {
+  font-size: 48px;
+  font-weight: 700;
+  max-width: 900px;
+  margin: 0 auto 20px;
+}
+
+.hero-subtitle {
+  font-size: 18px;
+  max-width: 760px;
+  margin: 0 auto;
+  line-height: 1.7;
+  opacity: 0.95;
+}
+
+.cta-row {
+  margin-top: 36px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.primary-btn {
+  padding: 14px 28px;
+  background: #ffffff;
+  color: #1e3a8a;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  padding: 14px 28px;
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ---------- TRUST STRIP ---------- */
+.trust-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 24px 40px;
+  background: #f1f5f9;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* ---------- SECTIONS ---------- */
+.section {
+  padding: 70px 40px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.heading {
+  text-align: center;
+  font-size: 34px;
+  margin-bottom: 50px;
+}
+
+/* ---------- CARDS ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  padding: 30px;
+  border-radius: 14px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.card h3 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.card p {
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+/* ---------- WHY SECTION ---------- */
+.why-section {
+  padding: 70px 40px;
+  background: #f9fafb;
+}
+
+.why-text {
+  max-width: 800px;
+  margin: auto;
+  font-size: 18px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+/* ---------- CTA ---------- */
+.cta-section {
+  padding: 70px 40px;
+  text-align: center;
+}
+
+.cta-title {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.cta-subtitle {
+  opacity: 0.8;
+  margin-bottom: 30px;
+}
+
+.email-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.email-row input {
+  padding: 14px;
+  width: 260px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+}
+
+.email-row button {
+  padding: 14px 24px;
+  border-radius: 8px;
+  background: #1e3a8a;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* ---------- FOOTER ---------- */
+.footer {
+  padding: 30px;
+  text-align: center;
+  background: #111827;
+  color: white;
+}
+
+.footer-tagline {
+  margin-top: 6px;
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 36px;
+  }
+
+  .heading {
+    font-size: 28px;
+  }
+}
+.service-list {
+  margin-top: 12px;
+  padding-left: 18px;
+  line-height: 1.8;
+  opacity: 0.9;
+}
+
+.service-list li {
+  list-style: disc;
+}
