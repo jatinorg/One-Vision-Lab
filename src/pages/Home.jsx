@@ -14,23 +14,21 @@ export default function Home() {
 
         <p className="hero-subtitle">
           One Vision Lab delivers AI-powered websites, advanced computer vision
-          services, technology insights, and industry-focused training — all
+          services, Intelligent Solutions
           driven by clarity, data, and innovation.
         </p>
 
         <div className="cta-row">
           <button className="primary-btn">Explore Services</button>
-          <button className="secondary-btn">View Training</button>
         </div>
       </section>
 
       {/* TRUST STRIP */}
-      <section className="trust-strip">
-        <div>AI-Driven Solutions</div>
-        <div>Advanced Computer Vision</div>
-        <div>Data-Backed Insights</div>
-        <div>Industry-Ready Training</div>
-      </section>
+      {/* <section className="trust-strip">
+        <div>AI-Driven Websites</div>
+        <div>Computer Vision</div>
+        <div>Intelligent Solutions</div>
+      </section> */}
 
       {/* SERVICES */}
       <section className="section">
@@ -46,18 +44,17 @@ export default function Home() {
           </div>
 
           <div className="card">
-            <h3>AI-Driven Websites</h3>
+            <h3>Computer Vision</h3>
             <p>
-              Intelligent websites powered by AI for automation, personalization,
-              and smarter user experiences.
+              High-quality, precision-focused image and video annotations for
+              advanced computer vision models.
             </p>
           </div>
 
           <div className="card">
-            <h3>Computer Vision (Advanced Annotations)</h3>
+            <h3>Intelligent Solutions</h3>
             <p>
-              High-quality, precision-focused image and video annotations for
-              advanced computer vision models.
+              Operational intelligence driven by AI-Ops, ML-Ops, and statistical strategies.
             </p>
           </div>
         </div>
@@ -68,15 +65,15 @@ export default function Home() {
         <h2 className="heading">Technology & Market Insights</h2>
         <p className="why-text">
           We provide up-to-date technology insights and weekly stock market
-          analysis backed by statistics and data-driven reasoning.
-          <br /><br />
+          analysis backed by statistics.
+          {/* <br /><br />
           Our goal is to help learners and professionals stay informed,
-          analytical, and ahead of trends.
+          analytical, and ahead of trends. */}
         </p>
       </section>
 
       {/* TRAINING */}
-      <section className="section">
+      {/* <section className="section">
         <h2 className="heading">Professional Training Programs</h2>
 
         <div className="grid">
@@ -104,7 +101,7 @@ export default function Home() {
             </p>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA */}
       <section className="cta-section">

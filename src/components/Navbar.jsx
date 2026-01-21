@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 import "./Navbar.css";
 
@@ -17,6 +17,11 @@ export default function Navbar() {
         {/* NAV LINKS */}
         <ul className="navbar-links">
 
+          {/* HOME */}
+          <li className="nav-item">
+            <NavLink to="/" end className="nav-link">Home</NavLink>
+          </li>
+
           {/* SERVICES */}
           <li
             className="nav-item has-dropdown"
@@ -26,53 +31,39 @@ export default function Navbar() {
             <span>Services</span>
             {openMenu === "services" && (
               <ul className="dropdown">
-                <li><Link to="/services">Website Development</Link></li>
-                <li><Link to="/services">AI-Driven Websites</Link></li>
-                <li><Link to="/services">Computer Vision (Annotations)</Link></li>
+                <li><Link to="/services/ai-driven-websites">AI-Driven Websites</Link></li>
+                <li><Link to="/computer-vision">Computer Vision</Link></li>
+                <li><Link to="/services/intelligent-solutions">Intelligent Solutions</Link></li>
               </ul>
             )}
           </li>
 
-          {/* TRAINING */}
+          {/* PRODUCTS */}
           <li
             className="nav-item has-dropdown"
-            onMouseEnter={() => setOpenMenu("training")}
+            onMouseEnter={() => setOpenMenu("products")}
             onMouseLeave={() => setOpenMenu(null)}
           >
-            <span>Training</span>
-            {openMenu === "training" && (
+            <NavLink to="/Products" className="nav-link">Products</NavLink>
+            {openMenu === "products" && (
               <ul className="dropdown">
-                <li><Link to="/training/cloud">Cloud Computing</Link></li>
-                <li><Link to="/training/databases">Databases</Link></li>
-                <li><Link to="/training/ai">AI & ML</Link></li>
+                {/* Future product links */}
               </ul>
             )}
           </li>
 
-          {/* STOCK ANALYSIS */}
+          {/* BLOG */}
           <li
             className="nav-item has-dropdown"
-            onMouseEnter={() => setOpenMenu("stocks")}
+            onMouseEnter={() => setOpenMenu("blog")}
             onMouseLeave={() => setOpenMenu(null)}
           >
-            <span>Stock Analysis</span>
-            {openMenu === "stocks" && (
+            <NavLink to="/Blog" className="nav-link">Blog</NavLink>
+            {openMenu === "blog" && (
               <ul className="dropdown">
-                <li><Link to="/stocks/weekly">Weekly Analysis</Link></li>
-                <li><Link to="/stocks/statistics">Statistical Analysis</Link></li>
-                <li><Link to="/stocks/reports">Market Reports</Link></li>
+                {/* Future blog links */}
               </ul>
             )}
-          </li>
-
-          {/* INSIGHTS */}
-          <li className="nav-item">
-            <Link to="/insights">Insights</Link>
-          </li>
-
-          {/* ABOUT */}
-          <li className="nav-item">
-            <Link to="/about">About</Link>
           </li>
 
           {/* CONTACT */}
