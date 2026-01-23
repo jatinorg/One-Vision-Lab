@@ -25,8 +25,8 @@ export default function NeuralBackground() {
             nodes = Array.from({ length: NODE_COUNT }, () => ({
                 x: Math.random() * width,
                 y: Math.random() * height,
-                vx: (Math.random() - 0.5) * 0.4, // Slower movement for background
-                vy: (Math.random() - 0.5) * 0.4,
+                vx: (Math.random() - 0.5) * 0.2, // Slower movement for background
+                vy: (Math.random() - 0.5) * 0.2,
             }));
         }
 

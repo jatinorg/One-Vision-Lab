@@ -59,8 +59,15 @@ const IntelligentSolutions = () => {
                                 className="is-char-card glass-hover"
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: index * 0.1 }}
+                                whileHover={{
+                                    rotateX: 10,
+                                    rotateY: 10,
+                                    z: 30,
+                                    boxShadow: "0 20px 40px rgba(56, 189, 248, 0.2)"
+                                }}
+                                transition={{ delay: index * 0.1, type: "spring", stiffness: 300, damping: 20 }}
                                 viewport={{ once: true }}
+                                style={{ transformStyle: "preserve-3d" }}
                             >
                                 <div className="is-char-icon">🧩</div>
                                 <p>{item}</p>
@@ -292,9 +299,20 @@ const IntelligentSolutions = () => {
                             "Retail & Customer",
                             "Smart Infrastructure"
                         ].map((industry, i) => (
-                            <div key={i} className="is-industry-card glass">
+                            <motion.div
+                                key={i}
+                                className="is-industry-card glass"
+                                whileHover={{
+                                    rotateX: -10,
+                                    rotateY: 10,
+                                    z: 30,
+                                    boxShadow: "0 20px 40px rgba(56, 189, 248, 0.2)"
+                                }}
+                                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                style={{ transformStyle: "preserve-3d" }}
+                            >
                                 <p>{industry}</p>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>

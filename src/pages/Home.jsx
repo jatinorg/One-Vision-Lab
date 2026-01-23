@@ -1,4 +1,6 @@
+import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
+import AnimatedCarousel from "../components/AnimatedCarousel";
 import "./Home.css";
 
 export default function Home() {
@@ -8,19 +10,46 @@ export default function Home() {
 
       {/* HERO */}
       <section className="hero">
-        <h1 className="hero-title">
+        <motion.h1
+          className="hero-title"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
           Building Intelligent Solutions with One Vision
-        </h1>
+        </motion.h1>
 
-        <p className="hero-subtitle">
+        <motion.p
+          className="hero-subtitle"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
           One Vision Lab delivers AI-powered websites, advanced computer vision
           services, Intelligent Solutions
           driven by clarity, data, and innovation.
-        </p>
+        </motion.p>
 
-        <div className="cta-row">
+        <motion.div
+          className="cta-row"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
           <button className="primary-btn">Explore Services</button>
-        </div>
+        </motion.div>
+      </section>
+
+      {/* 3D SHOWCASE */}
+      <section className="showcase-section">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          viewport={{ once: true }}
+        >
+          <AnimatedCarousel />
+        </motion.div>
       </section>
 
       {/* TRUST STRIP */}
@@ -35,28 +64,58 @@ export default function Home() {
         <h2 className="heading">Our Core Services</h2>
 
         <div className="grid">
-          <div className="card">
+          <motion.div
+            className="card"
+            whileHover={{
+              rotateX: 10,
+              rotateY: 10,
+              z: 50,
+              boxShadow: "0 20px 40px rgba(56, 189, 248, 0.2)"
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            style={{ transformStyle: "preserve-3d" }}
+          >
             <h3>Website Development</h3>
             <p>
               Custom, scalable, and performance-focused websites designed to
               meet modern business needs.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="card">
+          <motion.div
+            className="card"
+            whileHover={{
+              rotateX: 10,
+              rotateY: -10,
+              z: 50,
+              boxShadow: "0 20px 40px rgba(56, 189, 248, 0.2)"
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            style={{ transformStyle: "preserve-3d" }}
+          >
             <h3>Computer Vision</h3>
             <p>
               High-quality, precision-focused image and video annotations for
               advanced computer vision models.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="card">
+          <motion.div
+            className="card"
+            whileHover={{
+              rotateX: -10,
+              rotateY: 10,
+              z: 50,
+              boxShadow: "0 20px 40px rgba(56, 189, 248, 0.2)"
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            style={{ transformStyle: "preserve-3d" }}
+          >
             <h3>Intelligent Solutions</h3>
             <p>
               Operational intelligence driven by AI-Ops, ML-Ops, and statistical strategies.
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 

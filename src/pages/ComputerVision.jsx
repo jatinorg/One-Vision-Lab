@@ -62,8 +62,15 @@ export default function ComputerVision() {
                 className="cv-char-card glass-hover"
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
+                whileHover={{
+                  rotateX: 10,
+                  rotateY: 10,
+                  z: 30,
+                  boxShadow: "0 20px 40px rgba(56, 189, 248, 0.2)"
+                }}
+                transition={{ delay: index * 0.1, type: "spring", stiffness: 300, damping: 20 }}
                 viewport={{ once: true }}
+                style={{ transformStyle: "preserve-3d" }}
               >
                 <div className="cv-char-icon">⚡</div>
                 <p>{item}</p>
@@ -253,10 +260,21 @@ export default function ComputerVision() {
               { val: "24/7 Safety", desc: "Automated site monitoring" },
               { val: "30%+ Gain", desc: "In radiologist efficiency" }
             ].map((item, i) => (
-              <div key={i} className="cv-impact-card glass">
+              <motion.div
+                key={i}
+                className="cv-impact-card glass"
+                whileHover={{
+                  rotateX: -10,
+                  rotateY: 10,
+                  z: 30,
+                  boxShadow: "0 20px 40px rgba(56, 189, 248, 0.2)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                style={{ transformStyle: "preserve-3d" }}
+              >
                 <h4>{item.val}</h4>
                 <p>{item.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
