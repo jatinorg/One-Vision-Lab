@@ -8,7 +8,6 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-
         {/* LOGO */}
         <Link to="/" className="navbar-logo">
           One Vision Lab
@@ -16,7 +15,6 @@ export default function Navbar() {
 
         {/* NAV LINKS */}
         <ul className="navbar-links">
-
           {/* HOME */}
           <li className="nav-item">
             <NavLink to="/" end className="nav-link">Home</NavLink>
@@ -28,7 +26,7 @@ export default function Navbar() {
             onMouseEnter={() => setOpenMenu("services")}
             onMouseLeave={() => setOpenMenu(null)}
           >
-            <span>Services</span>
+            <span className="nav-link">Services</span>
             {openMenu === "services" && (
               <ul className="dropdown">
                 <li><Link to="/services/ai-driven-websites">AI-Driven Websites</Link></li>
@@ -39,31 +37,13 @@ export default function Navbar() {
           </li>
 
           {/* PRODUCTS */}
-          <li
-            className="nav-item has-dropdown"
-            onMouseEnter={() => setOpenMenu("products")}
-            onMouseLeave={() => setOpenMenu(null)}
-          >
+          <li className="nav-item">
             <NavLink to="/Products" className="nav-link">Products</NavLink>
-            {openMenu === "products" && (
-              <ul className="dropdown">
-                {/* Future product links */}
-              </ul>
-            )}
           </li>
 
           {/* BLOG */}
-          <li
-            className="nav-item has-dropdown"
-            onMouseEnter={() => setOpenMenu("blog")}
-            onMouseLeave={() => setOpenMenu(null)}
-          >
+          <li className="nav-item">
             <NavLink to="/Blog" className="nav-link">Blog</NavLink>
-            {openMenu === "blog" && (
-              <ul className="dropdown">
-                {/* Future blog links */}
-              </ul>
-            )}
           </li>
 
           {/* CONTACT */}
@@ -72,7 +52,6 @@ export default function Navbar() {
               Contact
             </Link>
           </li>
-
         </ul>
       </div>
     </nav>

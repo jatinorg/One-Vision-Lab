@@ -1,6 +1,4 @@
-import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
-import AnimatedCarousel from "../components/AnimatedCarousel";
 import "./Home.css";
 
 export default function Home() {
@@ -8,48 +6,26 @@ export default function Home() {
     <div className="home">
       <Navbar />
 
+      {/* ATMOSPHERE */}
+      <div className="glow-spot glow-1" style={{ top: '-20%', right: '-10%', opacity: 0.4 }} />
+      <div className="glow-spot glow-2" style={{ bottom: '-20%', left: '-10%', opacity: 0.4 }} />
+      <div className="ambient-fog" />
+
       {/* HERO */}
       <section className="hero">
-        <motion.h1
-          className="hero-title"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
+        <h1 className="hero-title">
           Building Intelligent Solutions with One Vision
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          className="hero-subtitle"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
+        <p className="hero-subtitle">
           One Vision Lab delivers AI-powered websites, advanced computer vision
           services, Intelligent Solutions
           driven by clarity, data, and innovation.
-        </motion.p>
+        </p>
 
-        <motion.div
-          className="cta-row"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
+        <div className="cta-row">
           <button className="primary-btn">Explore Services</button>
-        </motion.div>
-      </section>
-
-      {/* 3D SHOWCASE */}
-      <section className="showcase-section">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          viewport={{ once: true }}
-        >
-          <AnimatedCarousel />
-        </motion.div>
+        </div>
       </section>
 
       {/* TRUST STRIP */}
@@ -64,58 +40,28 @@ export default function Home() {
         <h2 className="heading">Our Core Services</h2>
 
         <div className="grid">
-          <motion.div
-            className="card"
-            whileHover={{
-              rotateX: 10,
-              rotateY: 10,
-              z: 50,
-              boxShadow: "0 20px 40px rgba(56, 189, 248, 0.2)"
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            style={{ transformStyle: "preserve-3d" }}
-          >
+          <div className="card">
             <h3>Website Development</h3>
             <p>
               Custom, scalable, and performance-focused websites designed to
               meet modern business needs.
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="card"
-            whileHover={{
-              rotateX: 10,
-              rotateY: -10,
-              z: 50,
-              boxShadow: "0 20px 40px rgba(56, 189, 248, 0.2)"
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            style={{ transformStyle: "preserve-3d" }}
-          >
+          <div className="card">
             <h3>Computer Vision</h3>
             <p>
               High-quality, precision-focused image and video annotations for
               advanced computer vision models.
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="card"
-            whileHover={{
-              rotateX: -10,
-              rotateY: 10,
-              z: 50,
-              boxShadow: "0 20px 40px rgba(56, 189, 248, 0.2)"
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            style={{ transformStyle: "preserve-3d" }}
-          >
+          <div className="card">
             <h3>Intelligent Solutions</h3>
             <p>
               Operational intelligence driven by AI-Ops, ML-Ops, and statistical strategies.
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 

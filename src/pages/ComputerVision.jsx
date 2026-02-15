@@ -1,298 +1,344 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useRef, useState } from "react";
 import Navbar from "../components/Navbar";
 import "./ComputerVision.css";
 
-export default function ComputerVision() {
+// --- CINEMATIC REAL ASSET COMPONENTS ---
+
+const CinematicBackground = ({ src, opacity, scale, blur, x, y, transformOrigin, children }) => (
+  <div className="phase-layer-container" style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <motion.div
+      className="phase-real-bg-cinematic"
+      style={{
+        backgroundImage: `url(${src})`,
+        opacity,
+        scale,
+        x,
+        y,
+        transformOrigin: transformOrigin || 'center',
+        filter: blur ? useTransform(blur, v => `blur(${v})`) : 'none',
+        position: 'absolute',
+        inset: '-20%'
+      }}
+    />
+    <motion.div style={{ opacity, position: 'relative', zIndex: 10 }}>
+      {children}
+    </motion.div>
+  </div>
+);
+
+const RevolvingRealEarth = ({ mouseX, mouseY, scrollSmooth }) => {
+  // Sync rotation to scroll so we land on India (approx 72% position on most mercator textures)
+  // We want it to spin a bit during the journey and land precisely.
+  const rotationOffset = useTransform(scrollSmooth, [0.4, 1], ["0%", "72%"]);
+
   return (
-    <div className="cv-page">
+    <motion.div
+      className="revolving-earth-container"
+      style={{
+        rotateX: useTransform(mouseY, [-500, 500], [15, -15]),
+        rotateY: useTransform(mouseX, [-500, 500], [-15, 15])
+      }}
+    >
+      <div className="earth-real-sphere" />
+      <motion.div
+        className="earth-real-texture-wrap"
+        style={{ backgroundPositionX: rotationOffset }}
+      />
+      <div className="earth-atmosphere-glow" />
+
+      {/* Procedural Satellites on Real Earth */}
+      {[0, 120, 240].map((delay, i) => (
+        <motion.div
+          key={i}
+          className="procedural-satellite"
+          animate={{
+            rotate: 360,
+            translateX: [180, 240, 180]
+          }}
+          transition={{ duration: 12 + i * 4, repeat: Infinity, ease: "linear", delay: i }}
+        >
+          <div className="sat-body" />
+          <div className="sat-beam" />
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+};
+
+const OrbitalOverlay = ({ mouseX, mouseY }) => (
+  <motion.div
+    className="orbital-ar-overlay"
+    style={{
+      x: useTransform(mouseX, [-500, 500], [-30, 30]),
+      y: useTransform(mouseY, [-500, 500], [-30, 30])
+    }}
+  >
+    <svg viewBox="0 0 800 800" className="orbital-svg">
+      {[150, 250, 350].map((r, i) => (
+        <circle key={i} cx="400" cy="400" r={r} className="orbit-line-dashed" />
+      ))}
+    </svg>
+  </motion.div>
+);
+
+const RadarLock = ({ mouseX, mouseY }) => (
+  <motion.div
+    className="urban-radar-container cine-radar"
+    style={{
+      x: useTransform(mouseX, [-500, 500], [-50, 50]),
+      y: useTransform(mouseY, [-500, 500], [-50, 50])
+    }}
+  >
+    <div className="radar-grid" />
+    <motion.div
+      className="radar-beam"
+      animate={{ rotate: 360 }}
+      transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+    />
+    <div className="radar-crosshair" />
+  </motion.div>
+);
+
+// --- MAIN COMPONENT ---
+
+export default function ComputerVision() {
+  const containerRef = useRef(null);
+  const [isTraveling, setIsTraveling] = useState(false);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  const scrollSmooth = useSpring(scrollYProgress, { stiffness: 60, damping: 25 });
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+    mouseX.set(clientX - innerWidth / 2);
+    mouseY.set(clientY - innerHeight / 2);
+  };
+
+  const handleWarpTravel = () => {
+    if (isTraveling) return;
+    setIsTraveling(true);
+
+    const currentPos = scrollYProgress.get();
+    let nextPos = 0;
+    if (currentPos < 0.2) nextPos = 0.25;
+    else if (currentPos < 0.45) nextPos = 0.5;
+    else if (currentPos < 0.7) nextPos = 0.75;
+    else nextPos = 0;
+
+    window.scrollTo({
+      top: nextPos * (containerRef.current.scrollHeight - window.innerHeight),
+      behavior: 'smooth'
+    });
+
+    setTimeout(() => setIsTraveling(false), 1500);
+  };
+
+  // --- DEEP ZOOM TRANSFORMS ---
+
+  // Phase 1: Galaxy (Deep Space)
+  const galaxyOpacity = useTransform(scrollSmooth, [0, 0.15, 0.55], [1, 0.8, 0]);
+  const galaxyScale = useTransform(scrollSmooth, [0, 0.55], [1.1, 10]);
+  const galaxyBlur = useTransform(scrollSmooth, [0, 0.3], ["0px", "10px"]);
+
+  // Phase 2: Solar System (The Final Earth Asset)
+  // We zoom directly into the background Earth until it fills the screen
+  const solarOpacity = useTransform(scrollSmooth, [0.1, 0.25, 0.9, 1], [0, 1, 1, 1]);
+  const solarScale = useTransform(scrollSmooth, [0.1, 0.3, 1], [1, 1, 30]); // Massive deep zoom
+  const solarBlur = useTransform(scrollSmooth, [0.95, 1], ["0px", "5px"]);
+
+  // UI elements appear at the very end "on earth"
+  const uiOpacity = useTransform(scrollSmooth, [0.8, 0.95], [0, 1]);
+
+  return (
+    <div
+      className={`cv-page-deep-journey cinematic-mode ${isTraveling ? 'is-warping' : ''}`}
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onClick={handleWarpTravel}
+    >
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="cv-hero">
-        <video autoPlay muted loop className="cv-video">
-          <source src="/assets/vision.mp4" type="video/mp4" />
-        </video>
-        <div className="cv-hero-overlay" />
-        <motion.div
-          className="cv-hero-content"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h1 className="cv-glitch-text">Computer Vision</h1>
-          <p className="cv-hero-subtitle">From Pixels to Decisions</p>
-          <p className="cv-hero-description">
-            Intelligence that sees, understands & acts. We build vision systems that
-            translate visual data into actionable business intelligence.
-          </p>
-          <div className="cv-hero-btns">
-            <Link to="/contact" className="cv-btn-primary">Get Started</Link>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Intro/Core Characteristics */}
-      <section className="cv-section cv-core">
-        <div className="container">
+      {/* FIXED HUD OVERLAY */}
+      <div className="cosmic-hud-fixed">
+        <div className="hud-corner top-left">
+          <div className="hud-line" />
+          <div className="hud-text">DEEP_PENETRATION // CINEMATIC_ACTIVE</div>
+          <div className="hud-text" style={{ fontSize: '0.6rem', opacity: 0.6 }}>REAL_STREAM_V4.0</div>
+        </div>
+        <div className="hud-corner bottom-right">
+          <div className="hud-text">DEPTH: {Math.round(scrollSmooth.get() * 12800)}km</div>
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="cv-info-card glass"
-          >
-            <h2>Visual Intelligence</h2>
-            <p>
-              Our Computer Vision solutions leverage state-of-the-art neural networks to
-              automate visual inspection, analyze document structures, and prioritize
-              medical diagnosis.
-            </p>
+            className="hud-telemetry"
+            animate={{ opacity: [0.3, 1, 0.3] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >SYNC_LOCK: ATTAINED</motion.div>
+          <div className="hud-line" />
+        </div>
+      </div>
+
+      <div className="deep-journey-viewport">
+
+        {/* PHASE 1: GALAXY */}
+        <CinematicBackground
+          src="/assets/galaxy_cinematic.png"
+          opacity={galaxyOpacity}
+          scale={galaxyScale}
+          blur={galaxyBlur}
+        >
+          <div className="phase-content">
+            <div className="tech-scan-code">SECTOR 01 // DEEP_FIELD</div>
+          </div>
+        </CinematicBackground>
+
+        {/* PHASE 2: SOLAR (Zooms to background Earth) */}
+        <CinematicBackground
+          src="/assets/solar_cinematic.png"
+          opacity={solarOpacity}
+          scale={solarScale}
+          transformOrigin="72% 60%"
+          blur={solarBlur}
+        >
+          <OrbitalOverlay mouseX={mouseX} mouseY={mouseY} />
+
+          {/* Final HUD & Interaction Layer appearing at end of zoom */}
+          <motion.div style={{ opacity: uiOpacity, position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10 }}>
+            <div className="phase-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem', marginTop: '-15%' }}>
+              <div className="tech-scan-code">SECTOR 03 // TERRA_BEYOND</div>
+
+              <div className="local-metrics-grid" style={{ opacity: 0.8 }}>
+                <div className="metric-box glass cine-glass">
+                  <div className="m-tag">NODES</div>
+                  <div className="m-num">8.4k</div>
+                </div>
+                <div className="metric-box glass cine-glass">
+                  <div className="m-tag">SIGNAL</div>
+                  <div className="m-num">OPT</div>
+                </div>
+              </div>
+
+              <Link to="/contact" className="cv-penetrate-btn cine">Initialize Protocol</Link>
+            </div>
           </motion.div>
 
-          <div className="cv-characteristics-grid">
-            {[
-              "Image Annotation",
-              "Object Classification",
-              "Optical Character Recognition",
-              "Image Segmentation",
-              "Real-time Tracking"
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                className="cv-char-card glass-hover"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                whileHover={{
-                  rotateX: 10,
-                  rotateY: 10,
-                  z: 30,
-                  boxShadow: "0 20px 40px rgba(56, 189, 248, 0.2)"
-                }}
-                transition={{ delay: index * 0.1, type: "spring", stiffness: 300, damping: 20 }}
-                viewport={{ once: true }}
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                <div className="cv-char-icon">⚡</div>
-                <p>{item}</p>
-              </motion.div>
-            ))}
+          <div className="phase-content">
+            <div className="tech-scan-code">SECTOR 02 // HELIOS_DOMAIN</div>
           </div>
-        </div>
-      </section>
+        </CinematicBackground>
 
-      {/* Detailed Features */}
-      <section className="cv-section">
+      </div>
+
+      <section className="cv-matrix-static">
+        <motion.div
+          className="global-cv-scanline"
+          animate={{ top: ['-10%', '110%'] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+        />
+
+        {/* Section Technical Crosshair */}
+        <motion.div
+          className="cv-section-crosshair"
+          style={{
+            x: mouseX,
+            y: useTransform(mouseY, v => v + 4000)
+          }}
+        >
+          <div className="ch-h" />
+          <div className="ch-v" />
+          <div className="ch-tag">PTR_LOCK</div>
+        </motion.div>
         <div className="container">
+          <motion.h2
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            className="matrix-heading cine"
+          >
+            Detection Matrix
+          </motion.h2>
 
-          {/* Quality Inspection */}
-          <div className="cv-feature-row">
-            <motion.div
-              className="cv-feature-text"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="gradient-text">Automated Visual Quality Inspection</h2>
-              <p>Our real-time systems identify defective and non-defective parts directly from live camera feeds.</p>
-              <ul className="cv-list">
-                <li>Detect defective vs non-defective parts</li>
-                <li>Accurate bounding box tracking</li>
-                <li>Factory automation ready</li>
-                <li>Scalable across production lines</li>
-              </ul>
-            </motion.div>
-            <motion.div
-              className="cv-feature-image"
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <img src="/assets/object-detection.jpg" alt="Quality Inspection" className="glass-img" />
-            </motion.div>
-          </div>
-
-          {/* Medical */}
-          <div className="cv-feature-row reverse">
-            <motion.div
-              className="cv-feature-text"
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="gradient-text">Medical Image Triage</h2>
-              <p>AI-assisted medical image triage prioritizes critical X-rays, CT scans, and MRIs for faster diagnosis.</p>
-              <ul className="cv-list">
-                <li>Automatic critical-case prioritization</li>
-                <li>Supports radiologists with AI insights</li>
-                <li>Improves clinical workflows</li>
-                <li>Seamless hospital integration</li>
-              </ul>
-            </motion.div>
-            <motion.div
-              className="cv-feature-image"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <img src="/assets/medical-image-triage.jpg" alt="Medical Triage" className="glass-img" />
-            </motion.div>
-          </div>
-
-          {/* Moderation */}
-          <div className="cv-feature-row">
-            <motion.div
-              className="cv-feature-text"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="gradient-text">AI Content Moderation</h2>
-              <p>AI systems analyze images and videos to detect harmful or policy-violating content at scale.</p>
-              <ul className="cv-list">
-                <li>Detects violence, nudity, and unsafe visuals</li>
-                <li>Real-time automated moderation</li>
-                <li>Reduced manual review costs</li>
-                <li>Enhanced platform safety</li>
-              </ul>
-            </motion.div>
-            <motion.div
-              className="cv-feature-image"
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <img src="/assets/content-moderation.jpg" alt="Content Moderation" className="glass-img" />
-            </motion.div>
-          </div>
-
-          {/* PPE */}
-          <div className="cv-feature-row reverse">
-            <motion.div
-              className="cv-feature-text"
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="gradient-text">PPE Detection & Worker Safety</h2>
-              <p>AI-powered PPE detection ensures worker compliance with helmets, vests, masks, and safety gear.</p>
-              <ul className="cv-list">
-                <li>Helmet & vest detection</li>
-                <li>Real-time safety alerts</li>
-                <li>Ideal for factories & construction sites</li>
-                <li>Enhanced workplace compliance</li>
-              </ul>
-            </motion.div>
-            <motion.div
-              className="cv-feature-image"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <img src="/assets/ppe-detection.jpg" alt="PPE Detection" className="glass-img" />
-            </motion.div>
-          </div>
-
-          {/* OCR */}
-          <div className="cv-feature-row">
-            <motion.div
-              className="cv-feature-text"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="gradient-text">OCR & Document Intelligence</h2>
-              <p>Extract structured data from documents using AI-powered OCR for automated processing.</p>
-              <ul className="cv-list">
-                <li>Structured data extraction</li>
-                <li>Multi-language support</li>
-                <li>Handwritten text recognition</li>
-                <li>Automated form processing</li>
-              </ul>
-            </motion.div>
-            <motion.div
-              className="cv-feature-image"
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <img src="/assets/ocr-document.jpg" alt="OCR" className="glass-img" />
-            </motion.div>
-          </div>
-
-          {/* Segmentation */}
-          <div className="cv-feature-row reverse">
-            <motion.div
-              className="cv-feature-text"
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="gradient-text">Image & Video Segmentation</h2>
-              <p>Pixel-level understanding for advanced analytics and automation in complex environments.</p>
-              <ul className="cv-list">
-                <li>Instance and semantic segmentation</li>
-                <li>Boundary-perfect object isolation</li>
-                <li>Video background removal</li>
-                <li>Advanced medical imaging masks</li>
-              </ul>
-            </motion.div>
-            <motion.div
-              className="cv-feature-image"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <img src="/assets/segmentation.jpg" alt="Segmentation" className="glass-img" />
-            </motion.div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* Business Impact */}
-      <section className="cv-section cv-impact">
-        <div className="container">
-          <h2 className="center-text gradient-text">Business Impact of CV</h2>
-          <div className="cv-impact-grid">
+          <div className="matrix-bento">
             {[
-              { val: "99%+ Accuracy", desc: "In quality inspection" },
-              { val: "80% Faster", desc: "Document processing" },
-              { val: "24/7 Safety", desc: "Automated site monitoring" },
-              { val: "30%+ Gain", desc: "In radiologist efficiency" }
+              {
+                title: "Neural Segmentation",
+                val: "99.98%",
+                label: "OBJECT_DETECTION_V4",
+                fill: "99%",
+                sub: "mAP: 0.942 | IoU: 0.89"
+              },
+              {
+                title: "Inference Engine",
+                val: "0.4ms",
+                label: "LATENCY_PROFILE",
+                fill: "85%",
+                sub: "FP16 QUANTIZED"
+              },
+              {
+                title: "Real-time Processing",
+                val: "120 FPS",
+                label: "STREAM_STABILITY",
+                fill: "70%",
+                sub: "4K MULTI-STREAM"
+              }
             ].map((item, i) => (
               <motion.div
                 key={i}
-                className="cv-impact-card glass"
-                whileHover={{
-                  rotateX: -10,
-                  rotateY: 10,
-                  z: 30,
-                  boxShadow: "0 20px 40px rgba(56, 189, 248, 0.2)"
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                style={{ transformStyle: "preserve-3d" }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="bento-item glass cine-glass"
               >
-                <h4>{item.val}</h4>
-                <p>{item.desc}</p>
+                {/* Visual CV Corners (Bounding Box Style) */}
+                <div className="cv-corner tl" />
+                <div className="cv-corner tr" />
+                <div className="cv-corner bl" />
+                <div className="cv-corner br" />
+
+                {/* Simulated Neural Detections */}
+                <div className="cv-active-detections">
+                  <motion.div
+                    className="cv-box"
+                    animate={{
+                      opacity: [0, 0.6, 0.4, 0.8, 0],
+                      x: [20, 40, 30],
+                      y: [10, 50, 20]
+                    }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                  >
+                    <span className="cv-box-label">[ {item.title.split(' ')[0].toUpperCase()} ]</span>
+                  </motion.div>
+                </div>
+
+                {/* Interactive Scanning HUD */}
+                <div className="card-telemetry-tag">SCANNING...</div>
+
+                <div className="b-label">{item.label}</div>
+                <div className="b-val">{item.val}</div>
+                <div className="b-title">{item.title}</div>
+
+                <div className="b-status-bar">
+                  <motion.div
+                    className="b-status-fill"
+                    initial={{ width: 0 }}
+                    whileInView={{ width: item.fill }}
+                    transition={{ duration: 1.5, ease: "easeOut" }}
+                  />
+                </div>
+
+                <div className="b-sub-metrics">{item.sub}</div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
-
-      {/* Final CTA */}
-      <section className="cv-final-cta">
-        <motion.div
-          className="container center-text"
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-        >
-          <h2>Build Vision-Powered Products</h2>
-          <p>Transform pixels into actionable insights with our custom Computer Vision solutions.</p>
-          <Link to="/contact" className="cv-btn-outline">Start Your Project</Link>
-        </motion.div>
-      </section>
-
-    </div>
+    </div >
   );
 }

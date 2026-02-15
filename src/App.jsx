@@ -15,10 +15,15 @@ const Placeholder = ({ title }) => (
   </div>
 );
 
-function App() {
+import { useLocation } from "react-router-dom";
+
+function AppContent() {
+  const location = useLocation();
+  const isCVPage = location.pathname.startsWith("/computer-vision");
+
   return (
-    <BrowserRouter>
-      <NeuralBackground />
+    <>
+      {!isCVPage && <NeuralBackground />}
       <Routes>
         {/* HOME */}
         <Route path="/" element={<Home />} />
@@ -39,6 +44,14 @@ function App() {
         <Route path="/Blog/*" element={<Blog />} />
         <Route path="/contact" element={<Placeholder title="Contact" />} />
       </Routes>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }

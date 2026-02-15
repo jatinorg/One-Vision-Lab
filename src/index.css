@@ -34,7 +34,8 @@ body {
   padding: 0;
   width: 100%;
   min-height: 100%;
-  background-color: var(--bg-dark);
+  background-color: transparent;
+  /* Allow NeuralBackground to show through */
   color: var(--text-primary);
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   overflow-x: hidden;
@@ -82,7 +83,7 @@ h4 {
 
 .glass-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(40px);
   border: 1px solid var(--glass-border);
   border-radius: 20px;
   box-shadow: var(--card-shadow);

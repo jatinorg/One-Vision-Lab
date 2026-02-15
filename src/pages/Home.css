@@ -1,30 +1,57 @@
-/* ---------- GLOBAL ---------- */
 .home {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  color: #111827;
-}
-
-/* ---------- HERO ---------- */
-.center-text {
-  text-align: center;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #fff;
+  background: #050505;
+  /* AI Page Dark Background */
+  min-height: 100vh;
+  width: 100%;
 }
 
 .showcase-section {
-  padding: 40px 0;
-  background: radial-gradient(circle at center, rgba(56, 189, 248, 0.05) 0%, transparent 70%);
-  overflow: hidden;
+  padding: 60px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
+/* ---------- HERO ---------- */
 .hero {
-  padding: 80px 40px 20px;
+  padding: 120px 40px;
   text-align: center;
-  background: radial-gradient(circle at center, #0f172a, #020617);
+  /* background: radial-gradient(circle at center, #1a1a1a, #050505); REMOVED to show global glow */
   color: white;
-  min-height: auto;
+  min-height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* ... existing styles ... */
+
+.glow-spot {
+  position: fixed;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 1;
+  /* Increased to be above background but below content */
+}
+
+/* Ensure content sits above */
+.hero,
+.section,
+.why-section,
+.cta-section,
+.footer {
+  position: relative;
+  z-index: 10;
+  background: transparent;
+  /* Force transparency */
 }
 
 .hero-title {
@@ -32,10 +59,13 @@
   font-weight: 800;
   max-width: 960px;
   margin: 0 auto 24px;
-  background: linear-gradient(135deg, #fff 0%, #38bdf8 100%);
+  background: linear-gradient(135deg, #00f2ff, #bc13fe);
+  /* AI Page Signature Gradient */
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.3));
+  /* Add Glow */
 }
 
 .hero-subtitle {
@@ -43,7 +73,8 @@
   max-width: 700px;
   margin: 0 auto;
   line-height: 1.8;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.6);
+  /* Muted white like AI page */
 }
 
 .cta-row {
@@ -56,30 +87,34 @@
 
 .primary-btn {
   padding: 16px 36px;
-  background: var(--accent-gradient);
-  color: var(--bg-dark);
+  background: linear-gradient(135deg, #00f2ff, #bc13fe);
+  /* AI Page Gradient */
+  color: #fff;
   border: none;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 242, 255, 0.3);
+  transition: all 0.3s ease;
 }
 
 .primary-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(56, 189, 248, 0.6);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0, 242, 255, 0.5);
 }
 
 .secondary-btn {
   padding: 16px 36px;
   background: transparent;
-  color: var(--accent-blue);
-  border: 1px solid var(--accent-blue);
+  color: #00f2ff;
+  /* Cyan Accent */
+  border: 1px solid rgba(0, 242, 255, 0.5);
   font-weight: 600;
   cursor: pointer;
 }
 
 .secondary-btn:hover {
-  background: rgba(56, 189, 248, 0.1);
+  background: rgba(0, 242, 255, 0.1);
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
 }
 
 /* ---------- TRUST STRIP ---------- */
@@ -91,8 +126,8 @@
   background: rgba(255, 255, 255, 0.03);
   text-align: center;
   font-weight: 600;
-  color: var(--text-secondary);
-  border-bottom: 1px solid var(--glass-border);
+  color: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* ---------- SECTIONS ---------- */
@@ -106,7 +141,8 @@
   text-align: center;
   font-size: 2.5rem;
   margin-bottom: 60px;
-  background: var(--accent-gradient);
+  background: linear-gradient(135deg, #00f2ff, #bc13fe);
+  /* AI Gradient */
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -117,39 +153,43 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 32px;
-  perspective: 1000px;
 }
 
 .card {
   padding: 40px;
   border-radius: 20px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.03);
+  /* AI Glass Style */
+  backdrop-filter: blur(40px);
+  /* KEEPING FULL BLUR per user request */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* Finer border */
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .card:hover {
   transform: translateY(-10px);
-  border-color: var(--accent-blue);
-  box-shadow: 0 20px 40px rgba(56, 189, 248, 0.15);
+  border-color: rgba(0, 242, 255, 0.2);
+  /* Cyan Hover */
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .card h3 {
   font-size: 1.5rem;
   margin-bottom: 16px;
-  color: var(--text-primary);
+  color: #fff;
 }
 
 .card p {
   line-height: 1.8;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* ---------- WHY SECTION ---------- */
 .why-section {
   padding: 100px 40px;
-  background: radial-gradient(circle at bottom right, rgba(99, 102, 241, 0.1), transparent);
+  background: transparent;
+  /* Clean dark background */
 }
 
 .why-text {
@@ -158,23 +198,24 @@
   font-size: 1.25rem;
   line-height: 1.8;
   text-align: center;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 /* ---------- CTA ---------- */
 .cta-section {
   padding: 120px 40px;
   text-align: center;
-  background: linear-gradient(to top, var(--bg-dark), transparent);
+  background: linear-gradient(to top, #050505, transparent);
 }
 
 .cta-title {
   font-size: 2.8rem;
   margin-bottom: 16px;
+  color: #fff;
 }
 
 .cta-subtitle {
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.6);
   margin-bottom: 40px;
   font-size: 1.1rem;
 }
@@ -184,12 +225,12 @@
   padding: 40px;
   text-align: center;
   background: #000;
-  border-top: 1px solid var(--glass-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .footer-tagline {
   margin-top: 8px;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.4);
   font-size: 14px;
 }
 
@@ -213,4 +254,48 @@
 
 .service-list li {
   list-style: disc;
+}
+
+/* ---------- ATMOSPHERE ---------- */
+.glow-spot {
+  position: fixed;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow-1 {
+  background: radial-gradient(circle, rgba(0, 242, 255, 0.15) 0%, transparent 70%);
+}
+
+.glow-2 {
+  background: radial-gradient(circle, rgba(188, 19, 254, 0.15) 0%, transparent 70%);
+}
+
+.ambient-fog {
+  position: fixed;
+  inset: 0;
+  background: url('https://grainy-gradients.vercel.app/noise.svg');
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.home {
+  position: relative;
+  overflow-x: hidden;
+}
+
+.hero,
+.section,
+.why-section,
+.cta-section,
+.footer {
+  position: relative;
+  z-index: 10;
+  /* Ensure content is above glow */
+  background: transparent !important;
 }
